@@ -1,0 +1,37 @@
+services:
+  postgresql:
+    container_name: ms_pg_sql
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - ms-network
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: ms_pg_admin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "8080:80"
+    networks:
+      - ms-network
+    restart: unless-stopped
+
+networks:
+  ms-network:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
